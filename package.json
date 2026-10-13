@@ -1,0 +1,24 @@
+{
+  "name": "mern-jwt-rbac-project",
+  "version": "1.0.0",
+  "description": "Role-Based Access Control MERN Stack Project with JWT Authentication",
+  "scripts": {
+    "backend": "cd backend && npm run dev",
+    "frontend": "cd frontend && npm run dev",
+    "seed": "cd backend && npm run seed",
+    "test": "cd backend && npm run test",
+    "build": "cd frontend && npm run build"
+  },
+  "keywords": [
+    "mern",
+    "jwt",
+    "role-based-access-control",
+    "react",
+    "nodejs",
+    "express",
+    "mongodb",
+    "tailwind"
+  ],
+  "author": "Ashish Tetarwal",
+  "license": "MIT"
+}
