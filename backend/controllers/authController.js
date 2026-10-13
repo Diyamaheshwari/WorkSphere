@@ -90,7 +90,8 @@ const loginUser = async (req, res) => {
       });
     }
 
-    const user = await User.findOne({ email }).populate('manager', 'name email');
+    const normalizedEmail = (email || '').trim().toLowerCase();
+    const user = await User.findOne({ email: normalizedEmail }).populate('manager', 'name email');
     if (!user) {
       return res.status(401).json({
         success: false,

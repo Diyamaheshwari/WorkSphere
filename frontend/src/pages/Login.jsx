@@ -21,10 +21,32 @@ export const Login = () => {
     setIsPendingNotice(false);
   };
 
-  const handleQuickFill = (email, password) => {
+  const handleQuickLogin = async (email, password) => {
     setFormData({ email, password });
     setError('');
     setIsPendingNotice(false);
+
+    if (email === 'pending@example.com') {
+      setIsPendingNotice(true);
+      return;
+    }
+
+    try {
+      setSubmitting(true);
+      const userData = await login(email, password);
+      if (userData?.role === 'admin') {
+        navigate('/dashboard/admin');
+      } else if (userData?.role === 'manager') {
+        navigate('/dashboard/manager');
+      } else {
+        navigate('/dashboard/user');
+      }
+    } catch (err) {
+      console.error(err);
+      setError(err.response?.data?.message || 'Login failed. Please verify credentials.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   const handleSubmit = async (e) => {
@@ -40,21 +62,27 @@ export const Login = () => {
       setError('');
       setIsPendingNotice(false);
 
-      const userData = await login(formData.email, formData.password);
+      const normalizedEmail = formData.email.trim().toLowerCase();
+      const userData = await login(normalizedEmail, formData.password);
 
-      if (userData.role === 'admin') {
+      if (userData?.role === 'admin') {
         navigate('/dashboard/admin');
-      } else if (userData.role === 'manager') {
+      } else if (userData?.role === 'manager') {
         navigate('/dashboard/manager');
       } else {
         navigate('/dashboard/user');
       }
     } catch (err) {
+      console.error('[WorkSphere Login Error]:', err);
       if (err.response?.data?.isPending) {
         setIsPendingNotice(true);
+      } else if (!err.response) {
+        setError(
+          'Backend server is waking up or unreachable. The live Render cloud server sleeps after inactivity and takes ~30–50s on the first attempt. Please wait a moment and try again.'
+        );
       } else {
         setError(
-          err.response?.data?.message || 'Invalid credentials. Please verify and try again.'
+          err.response?.data?.message || 'Invalid email or password. Please verify your credentials.'
         );
       }
     } finally {
@@ -198,38 +226,38 @@ export const Login = () => {
             <div className="grid grid-cols-2 gap-2 text-xs">
               <button
                 type="button"
-                onClick={() => handleQuickFill('admin@example.com', 'admin123')}
+                onClick={() => handleQuickLogin('admin@example.com', 'admin123')}
                 className="p-2 text-left bg-slate-50 hover:bg-indigo-50 border border-slate-200 rounded-xl transition cursor-pointer"
               >
                 <div className="font-bold text-slate-800">👑 Admin Portal</div>
-                <div className="text-[10px] text-slate-500">Full Workspace Control</div>
+                <div className="text-[10px] text-slate-500">Full Workspace Control • <span className="font-mono text-indigo-600">admin123</span></div>
               </button>
 
               <button
                 type="button"
-                onClick={() => handleQuickFill('sarah@example.com', 'manager123')}
+                onClick={() => handleQuickLogin('sarah@example.com', 'manager123')}
                 className="p-2 text-left bg-slate-50 hover:bg-indigo-50 border border-slate-200 rounded-xl transition cursor-pointer"
               >
                 <div className="font-bold text-slate-800">👔 Manager Portal</div>
-                <div className="text-[10px] text-slate-500">Sarah Jenkins (Backend)</div>
+                <div className="text-[10px] text-slate-500">Sarah Jenkins • <span className="font-mono text-indigo-600">manager123</span></div>
               </button>
 
               <button
                 type="button"
-                onClick={() => handleQuickFill('user@example.com', 'user123')}
+                onClick={() => handleQuickLogin('user@example.com', 'user123')}
                 className="p-2 text-left bg-slate-50 hover:bg-indigo-50 border border-slate-200 rounded-xl transition cursor-pointer"
               >
                 <div className="font-bold text-slate-800">👤 User Portal</div>
-                <div className="text-[10px] text-slate-500">Alex Rivera (Engineer)</div>
+                <div className="text-[10px] text-slate-500">Alex Rivera • <span className="font-mono text-indigo-600">user123</span></div>
               </button>
 
               <button
                 type="button"
-                onClick={() => handleQuickFill('pending@example.com', 'user123')}
+                onClick={() => handleQuickLogin('pending@example.com', 'user123')}
                 className="p-2 text-left bg-slate-50 hover:bg-amber-50 border border-slate-200 rounded-xl transition cursor-pointer"
               >
                 <div className="font-bold text-amber-800">⏳ Test Pending Guard</div>
-                <div className="text-[10px] text-amber-600">Jordan (Needs Approval)</div>
+                <div className="text-[10px] text-amber-600">Jordan • <span className="font-mono text-amber-700">user123</span></div>
               </button>
             </div>
           </div>
