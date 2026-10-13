@@ -157,8 +157,19 @@ export const Register = () => {
       </div>
 
       {/* Right Form Panel */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-10">
-        <div className="w-full max-w-md space-y-5">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-8 lg:p-10">
+        <div className="w-full max-w-md space-y-4 sm:space-y-5">
+          {/* Mobile Brand Logo (visible only on small screens) */}
+          <div className="flex lg:hidden items-center space-x-2.5 mb-2">
+            <div className="w-8 h-8 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-md shadow-indigo-600/30">
+              <Sparkles className="w-4 h-4" />
+            </div>
+            <div>
+              <span className="text-lg font-black tracking-tight text-slate-900">WorkSphere</span>
+              <p className="text-[10px] text-indigo-600 font-medium">Enterprise Management</p>
+            </div>
+          </div>
+
           <div>
             <h2 className="text-2xl font-black text-slate-900 tracking-tight">
               Create an account

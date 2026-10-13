@@ -61,44 +61,44 @@ export const AnalyticsReportsView = ({
   return (
     <div className="space-y-6">
       {/* 4 Top KPI Cards (matching Image 1) */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-5">
         {/* Card 1 */}
-        <div className="bg-[#EFF6FF] border border-[#BFDBFE] rounded-2xl p-6 text-center shadow-2xs">
-          <p className="text-3xl font-extrabold text-slate-900 tracking-tight">
+        <div className="bg-[#EFF6FF] border border-[#BFDBFE] rounded-2xl p-3.5 sm:p-6 text-center shadow-2xs">
+          <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
             {stats.completionRate || '94.2'}%
           </p>
-          <p className="text-xs font-semibold text-slate-600 mt-1">Task Completion Rate</p>
+          <p className="text-[11px] sm:text-xs font-semibold text-slate-600 mt-1">Task Completion Rate</p>
         </div>
 
         {/* Card 2 */}
-        <div className="bg-[#F5F3FF] border border-[#DDD6FE] rounded-2xl p-6 text-center shadow-2xs">
-          <p className="text-3xl font-extrabold text-slate-900 tracking-tight">
+        <div className="bg-[#F5F3FF] border border-[#DDD6FE] rounded-2xl p-3.5 sm:p-6 text-center shadow-2xs">
+          <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
             {stats.avgResponseTime || '2.4h'}
           </p>
-          <p className="text-xs font-semibold text-slate-600 mt-1">Average Response Time</p>
+          <p className="text-[11px] sm:text-xs font-semibold text-slate-600 mt-1">Average Response Time</p>
         </div>
 
         {/* Card 3 */}
-        <div className="bg-[#F0FDF4] border border-[#BBF7D0] rounded-2xl p-6 text-center shadow-2xs">
-          <p className="text-3xl font-extrabold text-slate-900 tracking-tight">
+        <div className="bg-[#F0FDF4] border border-[#BBF7D0] rounded-2xl p-3.5 sm:p-6 text-center shadow-2xs">
+          <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
             {stats.teamVelocity || stats.velocity || '18.5'}
           </p>
-          <p className="text-xs font-semibold text-slate-600 mt-1">Team Velocity</p>
+          <p className="text-[11px] sm:text-xs font-semibold text-slate-600 mt-1">Team Velocity</p>
         </div>
 
         {/* Card 4 */}
-        <div className="bg-[#FFF1F2] border border-[#FECDD3] rounded-2xl p-6 text-center shadow-2xs">
-          <p className="text-3xl font-extrabold text-slate-900 tracking-tight">
+        <div className="bg-[#FFF1F2] border border-[#FECDD3] rounded-2xl p-3.5 sm:p-6 text-center shadow-2xs">
+          <p className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
             {stats.sprintSuccessRate || '87%'}
           </p>
-          <p className="text-xs font-semibold text-slate-600 mt-1">Sprint Success Rate</p>
+          <p className="text-[11px] sm:text-xs font-semibold text-slate-600 mt-1">Sprint Success Rate</p>
         </div>
       </div>
 
       {/* Row 2: Monthly Progress & Team Efficiency Trend */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
         {/* Monthly Progress Chart */}
-        <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-2xs">
+        <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-6 shadow-2xs">
           <div className="flex justify-between items-center mb-4">
             <div>
               <h3 className="text-base font-bold text-slate-900">Monthly Progress</h3>
@@ -147,7 +147,7 @@ export const AnalyticsReportsView = ({
         </div>
 
         {/* Team Efficiency Trend */}
-        <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-2xs">
+        <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-6 shadow-2xs">
           <div className="flex justify-between items-center mb-4">
             <div>
               <h3 className="text-base font-bold text-slate-900">Team Efficiency Trend</h3>
@@ -182,9 +182,9 @@ export const AnalyticsReportsView = ({
       </div>
 
       {/* Row 3: Tasks by Category, Quick Insights, Productivity Trends */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-6">
         {/* Tasks by Category */}
-        <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-2xs">
+        <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-6 shadow-2xs">
           <h3 className="text-base font-bold text-slate-900 mb-1">Tasks by Category</h3>
           <p className="text-xs text-slate-500 mb-5">Distribution across different work categories</p>
 
@@ -214,7 +214,7 @@ export const AnalyticsReportsView = ({
         </div>
 
         {/* Quick Insights Cards (matching Image 1 middle card) */}
-        <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-2xs flex flex-col justify-between">
+        <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-6 shadow-2xs flex flex-col justify-between">
           <div>
             <h3 className="text-base font-bold text-slate-900 mb-1">Quick Insights</h3>
             <p className="text-xs text-slate-500 mb-4">Key intelligence for workspace optimization</p>
@@ -266,7 +266,7 @@ export const AnalyticsReportsView = ({
         </div>
 
         {/* Productivity Trends Donut Chart (matching Image 1 right card) */}
-        <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-2xs flex flex-col justify-between">
+        <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-6 shadow-2xs flex flex-col justify-between">
           <div>
             <h3 className="text-base font-bold text-slate-900 mb-1">Productivity Trends</h3>
             <p className="text-xs text-slate-500 mb-2">Weekly distribution percentage</p>

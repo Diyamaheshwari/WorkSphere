@@ -140,13 +140,24 @@ export const Login = () => {
       </div>
 
       {/* Right Form Panel */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center p-6 sm:p-12">
-        <div className="w-full max-w-md space-y-6">
+      <div className="w-full lg:w-1/2 flex items-center justify-center p-4 sm:p-8 lg:p-12">
+        <div className="w-full max-w-md space-y-5 sm:space-y-6">
+          {/* Mobile Brand Logo (visible only on small screens) */}
+          <div className="flex lg:hidden items-center space-x-2.5 mb-2">
+            <div className="w-8 h-8 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-md shadow-indigo-600/30">
+              <Sparkles className="w-4 h-4" />
+            </div>
+            <div>
+              <span className="text-lg font-black tracking-tight text-slate-900">WorkSphere</span>
+              <p className="text-[10px] text-indigo-600 font-medium">Enterprise Management</p>
+            </div>
+          </div>
+
           <div>
             <h2 className="text-2xl sm:text-3xl font-extrabold text-slate-900 tracking-tight">
               Sign in to your account
             </h2>
-            <p className="text-xs sm:text-sm text-slate-500 mt-1.5">
+            <p className="text-xs sm:text-sm text-slate-500 mt-1 sm:mt-1.5">
               Enter your corporate credentials to access your division workspace.
             </p>
           </div>
@@ -223,7 +234,7 @@ export const Login = () => {
             <p className="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-2">
               Quick One-Click Test Accounts:
             </p>
-            <div className="grid grid-cols-2 gap-2 text-xs">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
               <button
                 type="button"
                 onClick={() => handleQuickLogin('admin@example.com', 'admin123')}

@@ -184,7 +184,7 @@ export const AdminDashboard = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-[#F8FAFC]">
+    <div className="flex flex-col md:flex-row min-h-screen bg-[#F8FAFC]">
       {/* Sidebar with pending count */}
       <Sidebar
         activeTab={activeTab}
@@ -219,43 +219,43 @@ export const AdminDashboard = () => {
           </button>
         </Header>
 
-        <main className="p-6 md:p-8 max-w-7xl w-full mx-auto space-y-6">
+        <main className="p-3.5 sm:p-6 md:p-8 max-w-7xl w-full mx-auto space-y-4 sm:space-y-6">
           {/* Top KPI Cards (matching SaaS enterprise design) */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-2xs">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+            <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 shadow-2xs">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs font-semibold text-slate-500">Total Employees</span>
-                <Users className="w-4 h-4 text-indigo-600" />
+                <Users className="w-4 h-4 text-indigo-600 shrink-0" />
               </div>
-              <p className="text-2xl font-black text-slate-900">{stats.totalEmployees}</p>
-              <p className="text-[11px] text-slate-400 mt-1">Across 4 divisions</p>
+              <p className="text-xl sm:text-2xl font-black text-slate-900">{stats.totalEmployees}</p>
+              <p className="text-[10px] sm:text-[11px] text-slate-400 mt-1">Across 4 divisions</p>
             </div>
 
-            <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-2xs">
+            <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 shadow-2xs">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs font-semibold text-slate-500">Active Managers</span>
-                <Award className="w-4 h-4 text-purple-600" />
+                <Award className="w-4 h-4 text-purple-600 shrink-0" />
               </div>
-              <p className="text-2xl font-black text-slate-900">{stats.activeManagers}</p>
-              <p className="text-[11px] text-purple-600 font-medium mt-1">Division team leads</p>
+              <p className="text-xl sm:text-2xl font-black text-slate-900">{stats.activeManagers}</p>
+              <p className="text-[10px] sm:text-[11px] text-purple-600 font-medium mt-1">Division team leads</p>
             </div>
 
-            <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-2xs">
+            <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 shadow-2xs">
               <div className="flex items-center justify-between mb-2">
-                <span className="text-xs font-semibold text-slate-500">Company Completion Rate</span>
-                <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+                <span className="text-xs font-semibold text-slate-500">Completion Rate</span>
+                <CheckCircle2 className="w-4 h-4 text-emerald-600 shrink-0" />
               </div>
-              <p className="text-2xl font-black text-slate-900">{stats.completionRate}%</p>
-              <p className="text-[11px] text-emerald-600 font-medium mt-1">Overall task velocity</p>
+              <p className="text-xl sm:text-2xl font-black text-slate-900">{stats.completionRate}%</p>
+              <p className="text-[10px] sm:text-[11px] text-emerald-600 font-medium mt-1">Overall task velocity</p>
             </div>
 
-            <div className="bg-white border border-slate-200/80 rounded-2xl p-5 shadow-2xs">
+            <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-5 shadow-2xs">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-xs font-semibold text-slate-500">Pending Approvals</span>
-                <ShieldCheck className="w-4 h-4 text-amber-600" />
+                <ShieldCheck className="w-4 h-4 text-amber-600 shrink-0" />
               </div>
-              <p className="text-2xl font-black text-amber-600">{pendingUsers.length}</p>
-              <p className="text-[11px] text-amber-600 font-medium mt-1">Awaiting verification</p>
+              <p className="text-xl sm:text-2xl font-black text-amber-600">{pendingUsers.length}</p>
+              <p className="text-[10px] sm:text-[11px] text-amber-600 font-medium mt-1">Awaiting verification</p>
             </div>
           </div>
 
@@ -354,14 +354,14 @@ export const AdminDashboard = () => {
 
                   <div className="divide-y divide-amber-200/60">
                     {pendingUsers.map((p) => (
-                      <div key={p._id} className="py-3 flex items-center justify-between gap-4">
+                      <div key={p._id} className="py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3">
                         <div>
                           <p className="text-sm font-bold text-slate-900">{p.name}</p>
                           <p className="text-xs text-slate-500">
                             {p.email} • Requested: {p.role} ({p.department})
                           </p>
                         </div>
-                        <div className="flex items-center space-x-2">
+                        <div className="flex items-center space-x-2 self-start sm:self-auto shrink-0">
                           <button
                             onClick={() => handleApproveUser(p._id)}
                             className="flex items-center space-x-1 bg-emerald-600 hover:bg-emerald-700 text-white font-semibold text-xs px-3.5 py-1.5 rounded-xl shadow-xs transition"
@@ -384,8 +384,8 @@ export const AdminDashboard = () => {
               )}
 
               {/* Full Employee Directory Table */}
-              <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-2xs">
-                <div className="flex justify-between items-center mb-5">
+              <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-6 shadow-2xs">
+                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-5">
                   <div>
                     <h3 className="text-base font-bold text-slate-900">Company Employee Directory</h3>
                     <p className="text-xs text-slate-500">
@@ -394,7 +394,7 @@ export const AdminDashboard = () => {
                   </div>
                   <button
                     onClick={() => setIsAddUserOpen(true)}
-                    className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs px-4 py-2 rounded-xl shadow-xs transition"
+                    className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs px-4 py-2 rounded-xl shadow-xs transition shrink-0"
                   >
                     + Add Employee
                   </button>
@@ -532,8 +532,8 @@ export const AdminDashboard = () => {
 
           {/* TAB 5: Projects */}
           {activeTab === 'projects' && (
-            <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-2xs">
-              <div className="flex justify-between items-center mb-5">
+            <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-6 shadow-2xs">
+              <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3 mb-5">
                 <div>
                   <h3 className="text-base font-bold text-slate-900">Company Project Portfolio</h3>
                   <p className="text-xs text-slate-500">
@@ -542,7 +542,7 @@ export const AdminDashboard = () => {
                 </div>
                 <button
                   onClick={() => setIsProjectModalOpen(true)}
-                  className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs px-4 py-2 rounded-xl shadow-xs transition flex items-center space-x-1"
+                  className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs px-4 py-2 rounded-xl shadow-xs transition flex items-center space-x-1 shrink-0"
                 >
                   <Plus className="w-4 h-4" />
                   <span>+ Create & Assign Project</span>
@@ -591,7 +591,7 @@ export const AdminDashboard = () => {
       {/* Invite Member Modal */}
       {isAddUserOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 animate-in fade-in zoom-in-95 duration-150">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-4 sm:p-6 max-h-[92vh] overflow-y-auto animate-in fade-in zoom-in-95 duration-150">
             <h3 className="text-lg font-bold text-slate-900 mb-4 pb-2 border-b border-slate-100">
               Invite / Create Workspace Account
             </h3>
@@ -706,7 +706,7 @@ export const AdminDashboard = () => {
       {/* Edit Employee Modal */}
       {editingUser && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 animate-in fade-in zoom-in-95 duration-150">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-4 sm:p-6 max-h-[92vh] overflow-y-auto animate-in fade-in zoom-in-95 duration-150">
             <h3 className="text-lg font-bold text-slate-900 mb-4 pb-2 border-b border-slate-100">
               Edit Employee Profile & Assignments
             </h3>

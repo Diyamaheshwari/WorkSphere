@@ -32,6 +32,7 @@ export const ActionPathBoard = ({
   const [commentText, setCommentText] = useState('');
   const [selectedAssignee, setSelectedAssignee] = useState('all');
   const [selectedPriority, setSelectedPriority] = useState('all');
+  const [mobileActiveCol, setMobileActiveCol] = useState('all');
 
   const handleDragStart = (e, taskId) => {
     e.dataTransfer.setData('text/plain', taskId);
@@ -160,17 +161,49 @@ export const ActionPathBoard = ({
         </div>
       </div>
 
+      {/* Mobile Column Filter Pills (Visible ONLY on small screens < md) */}
+      <div className="flex md:hidden items-center space-x-1.5 overflow-x-auto pb-1 scrollbar-none">
+        <button
+          onClick={() => setMobileActiveCol('all')}
+          className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition ${
+            mobileActiveCol === 'all'
+              ? 'bg-indigo-600 text-white shadow-xs'
+              : 'bg-white text-slate-600 border border-slate-200'
+          }`}
+        >
+          All Columns ({filteredTasks.length})
+        </button>
+        {COLUMNS.map((col) => {
+          const count = filteredTasks.filter((t) => t.status === col.id).length;
+          return (
+            <button
+              key={col.id}
+              onClick={() => setMobileActiveCol(col.id)}
+              className={`px-3 py-1.5 rounded-xl text-xs font-bold whitespace-nowrap transition flex items-center space-x-1.5 ${
+                mobileActiveCol === col.id
+                  ? 'bg-indigo-600 text-white shadow-xs'
+                  : 'bg-white text-slate-600 border border-slate-200'
+              }`}
+            >
+              <span>{col.title}</span>
+              <span className={`px-1.5 py-0.2 rounded-full text-[10px] ${mobileActiveCol === col.id ? 'bg-indigo-700 text-white' : 'bg-slate-100 text-slate-600'}`}>{count}</span>
+            </button>
+          );
+        })}
+      </div>
+
       {/* 4 Kanban Columns (matching Image 2) */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
         {COLUMNS.map((col) => {
           const colTasks = filteredTasks.filter((t) => t.status === col.id);
+          const isHiddenOnMobile = mobileActiveCol !== 'all' && mobileActiveCol !== col.id;
 
           return (
             <div
               key={col.id}
               onDragOver={handleDragOver}
               onDrop={(e) => handleDrop(e, col.id)}
-              className="bg-slate-50/70 border border-slate-200/90 rounded-2xl p-3.5 min-h-[550px] flex flex-col"
+              className={`${isHiddenOnMobile ? 'hidden md:flex' : 'flex'} bg-slate-50/70 border border-slate-200/90 rounded-2xl p-3.5 min-h-[380px] md:min-h-[550px] flex-col`}
             >
               {/* Column Header */}
               <div className="flex items-center justify-between pb-3 mb-3 border-b border-slate-200">

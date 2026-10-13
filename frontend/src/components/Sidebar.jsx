@@ -131,6 +131,7 @@ export const Sidebar = ({ activeTab, onTabChange, pendingCount = 0 }) => {
             </div>
             <Link
               to="/dashboard/manager"
+              onClick={() => setMobileOpen(false)}
               className="flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800/60 transition"
             >
               <span>View as Manager</span>
@@ -138,6 +139,7 @@ export const Sidebar = ({ activeTab, onTabChange, pendingCount = 0 }) => {
             </Link>
             <Link
               to="/dashboard/user"
+              onClick={() => setMobileOpen(false)}
               className="flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800/60 transition"
             >
               <span>View as User</span>
@@ -153,6 +155,7 @@ export const Sidebar = ({ activeTab, onTabChange, pendingCount = 0 }) => {
             </div>
             <Link
               to="/dashboard/user"
+              onClick={() => setMobileOpen(false)}
               className="flex items-center justify-between px-3.5 py-2 rounded-xl text-xs font-medium text-slate-400 hover:text-white hover:bg-slate-800/60 transition"
             >
               <span>View as User</span>

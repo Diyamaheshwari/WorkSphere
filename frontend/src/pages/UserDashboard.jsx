@@ -89,7 +89,7 @@ export const UserDashboard = () => {
   };
 
   return (
-    <div className="flex min-h-screen bg-[#F8FAFC]">
+    <div className="flex flex-col md:flex-row min-h-screen bg-[#F8FAFC]">
       {/* Fixed Midnight Navy Sidebar */}
       <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
 
@@ -107,18 +107,18 @@ export const UserDashboard = () => {
           onSearch={setSearchQuery}
         />
 
-        <main className="p-6 md:p-8 max-w-7xl w-full mx-auto space-y-6">
+        <main className="p-3.5 sm:p-6 md:p-8 max-w-7xl w-full mx-auto space-y-4 sm:space-y-6">
           {/* Welcome Header & Metric Pills (matching Image 3) */}
-          <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-2xs">
-            <div className="mb-5">
-              <h2 className="text-2xl font-bold text-slate-900 tracking-tight">
+          <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-6 shadow-2xs">
+            <div className="mb-4 sm:mb-5">
+              <h2 className="text-xl sm:text-2xl font-bold text-slate-900 tracking-tight">
                 Good morning, {user?.name ? user.name.split(' ')[0] : 'Member'}! 👋
               </h2>
               <p className="text-xs text-slate-500 mt-1">Let's make today productive!</p>
             </div>
 
             {/* Metric Pills Row (matching Image 3 top cards) */}
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5 sm:gap-3">
               {/* Completed Pill */}
               <div className="flex items-center space-x-3 bg-emerald-50/70 border border-emerald-200/80 rounded-xl px-4 py-3">
                 <CheckCircle2 className="w-5 h-5 text-emerald-600 shrink-0" />
@@ -183,8 +183,8 @@ export const UserDashboard = () => {
           {activeTab === 'projects' && (
             <div className="space-y-6">
               {/* Today's Projects */}
-              <div className="bg-white border border-slate-200/80 rounded-2xl p-6 shadow-2xs">
-                <div className="flex items-center justify-between mb-4">
+              <div className="bg-white border border-slate-200/80 rounded-2xl p-4 sm:p-6 shadow-2xs">
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-1 mb-4">
                   <div className="flex items-center space-x-2">
                     <h3 className="text-base font-bold text-slate-900">Today's deliverables</h3>
                     <span className="text-xs font-bold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full">
