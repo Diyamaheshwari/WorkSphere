@@ -208,7 +208,7 @@ export const Sidebar = ({ activeTab, onTabChange, pendingCount = 0 }) => {
       </aside>
 
       {/* Mobile Header Bar with Hamburger */}
-      <div className="md:hidden flex items-center justify-between px-4 py-3 bg-[#172554] text-white sticky top-0 z-40">
+      <div className="md:hidden flex items-center justify-between w-full px-4 py-3 bg-[#172554] text-white sticky top-0 z-40 shrink-0">
         <div className="flex items-center space-x-2.5">
           <div className="w-7 h-7 rounded-lg bg-indigo-600 flex items-center justify-center text-white">
             <Sparkles className="w-4 h-4" />

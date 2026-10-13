@@ -94,7 +94,7 @@ export const UserDashboard = () => {
       <Sidebar activeTab={activeTab} onTabChange={setActiveTab} />
 
       {/* Main Content Area */}
-      <div className="flex-1 flex flex-col min-w-0">
+      <div className="flex-1 flex flex-col min-w-0 w-full">
         <Header
           title={
             activeTab === 'board'
