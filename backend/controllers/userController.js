@@ -229,6 +229,42 @@ const updateUserRole = async (req, res) => {
   }
 };
 
+// @desc    Update employee details (Department, Title, Manager, Role)
+// @route   PUT /api/users/:id
+// @access  Private (Admin only)
+const updateUser = async (req, res) => {
+  try {
+    const { name, department, title, manager, role } = req.body;
+    const user = await User.findById(req.params.id);
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' });
+    }
+
+    if (name) user.name = name;
+    if (department) user.department = department;
+    if (title) user.title = title;
+    if (manager !== undefined) user.manager = manager || null;
+    if (role) user.role = role;
+
+    await user.save();
+
+    await Activity.create({
+      user: req.user._id,
+      action: 'USER_UPDATED',
+      details: `${req.user.name} updated profile for ${user.name} (${user.role})`,
+    });
+
+    res.status(200).json({
+      success: true,
+      message: 'User updated successfully',
+      user,
+    });
+  } catch (error) {
+    console.error('Error updating user:', error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 // @desc    Toggle user status (Active / Disabled)
 // @route   PUT /api/users/:id/status
 // @access  Private (Admin only)
@@ -335,6 +371,7 @@ module.exports = {
   approveUser,
   rejectUser,
   updateUserRole,
+  updateUser,
   toggleUserStatus,
   createUser,
 };

@@ -7,6 +7,7 @@ const {
   approveUser,
   rejectUser,
   updateUserRole,
+  updateUser,
   toggleUserStatus,
   createUser,
 } = require('../controllers/userController');
@@ -24,7 +25,8 @@ router.put('/:id/reject', protect, authorize('manager', 'admin'), rejectUser);
 // Create user (Admin can create any role; Manager can create team members)
 router.post('/', protect, authorize('manager', 'admin'), createUser);
 
-// Admin-only role and status modifications
+// Admin-only user updates, role, and status modifications
+router.put('/:id', protect, authorize('admin'), updateUser);
 router.put('/:id/role', protect, authorize('admin'), updateUserRole);
 router.put('/:id/status', protect, authorize('admin'), toggleUserStatus);
 

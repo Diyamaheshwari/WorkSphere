@@ -28,9 +28,11 @@ export const Register = () => {
     const fetchManagers = async () => {
       try {
         const res = await api.get('/api/users/managers');
-        setManagers(res.data.managers || []);
-        if (res.data.managers?.length > 0) {
-          setFormData((prev) => ({ ...prev, managerId: res.data.managers[0]._id }));
+        const list = res.data.managers || [];
+        setManagers(list);
+        if (list.length > 0) {
+          const match = list.find((m) => m.department === formData.department) || list[0];
+          setFormData((prev) => ({ ...prev, managerId: match._id }));
         }
       } catch (err) {
         console.error('Error fetching managers:', err);
@@ -40,7 +42,17 @@ export const Register = () => {
   }, []);
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    if (name === 'department') {
+      const match = managers.find((m) => m.department === value);
+      setFormData((prev) => ({
+        ...prev,
+        department: value,
+        managerId: match ? match._id : (managers[0]?._id || ''),
+      }));
+    } else {
+      setFormData((prev) => ({ ...prev, [name]: value }));
+    }
     setError('');
   };
 
@@ -219,7 +231,7 @@ export const Register = () => {
 
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                  Division Lead (Manager)
+                  Division Lead (Manager) *
                 </label>
                 <select
                   name="managerId"
@@ -227,9 +239,12 @@ export const Register = () => {
                   onChange={handleChange}
                   className="w-full bg-white border border-slate-200 rounded-xl px-3 py-2 text-xs text-slate-800 focus:outline-none"
                 >
+                  {managers.length === 0 && (
+                    <option value="">Loading managers...</option>
+                  )}
                   {managers.map((m) => (
                     <option key={m._id} value={m._id}>
-                      {m.name} ({m.department?.split(' ')[0]})
+                      {m.name} — {m.department}
                     </option>
                   ))}
                 </select>

@@ -20,6 +20,7 @@ import {
   FolderKanban,
   Award,
   Plus,
+  Edit2,
 } from 'lucide-react';
 
 export const AdminDashboard = () => {
@@ -44,9 +45,32 @@ export const AdminDashboard = () => {
     email: '',
     password: '',
     role: 'user',
-    department: 'Engineering',
+    department: 'Backend & Cloud Infrastructure',
     title: 'Developer',
+    managerId: '',
   });
+
+  // Edit Employee State
+  const [editingUser, setEditingUser] = useState(null);
+
+  const handleUpdateUser = async (e) => {
+    e.preventDefault();
+    if (!editingUser) return;
+    try {
+      await api.put(`/api/users/${editingUser._id}`, {
+        name: editingUser.name,
+        department: editingUser.department,
+        title: editingUser.title,
+        manager: editingUser.manager,
+        role: editingUser.role,
+      });
+      setEditingUser(null);
+      loadData();
+    } catch (err) {
+      console.error('Error updating user:', err);
+      alert(err.response?.data?.message || 'Error updating user');
+    }
+  };
 
   const loadData = async () => {
     try {
@@ -383,6 +407,7 @@ export const AdminDashboard = () => {
                         <th className="py-3 px-4">Employee</th>
                         <th className="py-3 px-4">Department & Title</th>
                         <th className="py-3 px-4">Role</th>
+                        <th className="py-3 px-4">Assigned Manager</th>
                         <th className="py-3 px-4">Status</th>
                         <th className="py-3 px-4 text-right">Actions</th>
                       </tr>
@@ -390,6 +415,7 @@ export const AdminDashboard = () => {
                     <tbody className="divide-y divide-slate-100">
                       {usersList.map((u) => {
                         const isSelf = u._id === user?.id || u._id === user?._id;
+                        const managerObj = usersList.find((m) => m._id === u.manager);
 
                         return (
                           <tr key={u._id} className="hover:bg-slate-50/70 transition">
@@ -402,16 +428,20 @@ export const AdminDashboard = () => {
                               <span className="text-[10px] text-slate-400">{u.title || 'Team Member'}</span>
                             </td>
                             <td className="py-3.5 px-4">
-                              <select
-                                disabled={isSelf}
-                                value={u.role}
-                                onChange={(e) => handleRoleChange(u._id, e.target.value)}
-                                className="text-xs font-semibold rounded-lg px-2.5 py-1 border border-slate-300 bg-white cursor-pointer disabled:opacity-50"
-                              >
-                                <option value="user">User</option>
-                                <option value="manager">Manager</option>
-                                <option value="admin">Admin</option>
-                              </select>
+                              <span className="text-xs font-semibold uppercase tracking-wider px-2 py-0.5 rounded bg-slate-100 text-slate-700">
+                                {u.role}
+                              </span>
+                            </td>
+                            <td className="py-3.5 px-4 text-slate-600 text-xs">
+                              {u.role === 'manager' ? (
+                                <span className="text-purple-600 font-bold text-[11px]">Division Lead</span>
+                              ) : u.role === 'admin' ? (
+                                <span className="text-indigo-600 font-bold text-[11px]">Executive Admin</span>
+                              ) : managerObj ? (
+                                <span className="font-semibold text-slate-800">{managerObj.name}</span>
+                              ) : (
+                                <span className="text-slate-400 italic">None</span>
+                              )}
                             </td>
                             <td className="py-3.5 px-4">
                               <span
@@ -427,26 +457,36 @@ export const AdminDashboard = () => {
                               </span>
                             </td>
                             <td className="py-3.5 px-4 text-right">
-                              {u.status === 'pending' ? (
+                              <div className="flex items-center justify-end space-x-1.5">
                                 <button
-                                  onClick={() => handleApproveUser(u._id)}
-                                  className="text-xs font-bold px-3 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white transition shadow-xs"
+                                  onClick={() => setEditingUser({ ...u })}
+                                  className="text-xs font-semibold px-2.5 py-1 rounded-lg bg-slate-100 hover:bg-indigo-50 text-slate-700 hover:text-indigo-600 transition flex items-center space-x-1"
+                                  title="Edit profile & assigned manager"
                                 >
-                                  Authorize
+                                  <Edit2 className="w-3 h-3" />
+                                  <span>Edit</span>
                                 </button>
-                              ) : (
-                                <button
-                                  disabled={isSelf}
-                                  onClick={() => handleToggleStatus(u._id)}
-                                  className={`text-xs font-semibold px-3 py-1 rounded-lg transition ${
-                                    u.isActive
-                                      ? 'bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-600'
-                                      : 'bg-emerald-100 hover:bg-emerald-200 text-emerald-800'
-                                  } disabled:opacity-40 disabled:cursor-not-allowed`}
-                                >
-                                  {u.isActive ? 'Deactivate' : 'Reactivate'}
-                                </button>
-                              )}
+                                {u.status === 'pending' ? (
+                                  <button
+                                    onClick={() => handleApproveUser(u._id)}
+                                    className="text-xs font-bold px-3 py-1 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white transition shadow-xs"
+                                  >
+                                    Authorize
+                                  </button>
+                                ) : (
+                                  <button
+                                    disabled={isSelf}
+                                    onClick={() => handleToggleStatus(u._id)}
+                                    className={`text-xs font-semibold px-2.5 py-1 rounded-lg transition ${
+                                      u.isActive
+                                        ? 'bg-slate-100 hover:bg-rose-50 text-slate-700 hover:text-rose-600'
+                                        : 'bg-emerald-100 hover:bg-emerald-200 text-emerald-800'
+                                    } disabled:opacity-40 disabled:cursor-not-allowed`}
+                                  >
+                                    {u.isActive ? 'Deactivate' : 'Reactivate'}
+                                  </button>
+                                )}
+                              </div>
                             </td>
                           </tr>
                         );
@@ -594,20 +634,20 @@ export const AdminDashboard = () => {
 
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Role</label>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Role *</label>
                   <select
                     value={newUser.role}
                     onChange={(e) => setNewUser({ ...newUser, role: e.target.value })}
                     className="w-full text-xs border border-slate-300 rounded-xl px-3 py-2 bg-white"
                   >
-                    <option value="user">User</option>
-                    <option value="manager">Manager</option>
-                    <option value="admin">Admin</option>
+                    <option value="user">User (Team Member)</option>
+                    <option value="manager">Manager (Division Lead)</option>
+                    <option value="admin">Admin (Executive)</option>
                   </select>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-bold text-slate-700 mb-1">Division</label>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Division *</label>
                   <select
                     value={newUser.department}
                     onChange={(e) => setNewUser({ ...newUser, department: e.target.value })}
@@ -620,6 +660,28 @@ export const AdminDashboard = () => {
                   </select>
                 </div>
               </div>
+
+              {newUser.role === 'user' && (
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    Assign Reporting Manager
+                  </label>
+                  <select
+                    value={newUser.managerId}
+                    onChange={(e) => setNewUser({ ...newUser, managerId: e.target.value })}
+                    className="w-full text-xs border border-slate-300 rounded-xl px-3 py-2 bg-white"
+                  >
+                    <option value="">Unassigned</option>
+                    {usersList
+                      .filter((u) => u.role === 'manager')
+                      .map((m) => (
+                        <option key={m._id} value={m._id}>
+                          {m.name} ({m.department})
+                        </option>
+                      ))}
+                  </select>
+                </div>
+              )}
 
               <div className="flex justify-end gap-2.5 pt-4 border-t border-slate-100">
                 <button
@@ -634,6 +696,117 @@ export const AdminDashboard = () => {
                   className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow-xs"
                 >
                   Create & Activate
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Edit Employee Modal */}
+      {editingUser && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full p-6 animate-in fade-in zoom-in-95 duration-150">
+            <h3 className="text-lg font-bold text-slate-900 mb-4 pb-2 border-b border-slate-100">
+              Edit Employee Profile & Assignments
+            </h3>
+            <form onSubmit={handleUpdateUser} className="space-y-4">
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">Full Name</label>
+                <input
+                  type="text"
+                  required
+                  value={editingUser.name}
+                  onChange={(e) => setEditingUser({ ...editingUser, name: e.target.value })}
+                  className="w-full text-xs border border-slate-300 rounded-xl px-3.5 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">Email</label>
+                <input
+                  type="email"
+                  disabled
+                  value={editingUser.email}
+                  className="w-full text-xs border border-slate-200 rounded-xl px-3.5 py-2 bg-slate-100 text-slate-500"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Role</label>
+                  <select
+                    value={editingUser.role}
+                    onChange={(e) => setEditingUser({ ...editingUser, role: e.target.value })}
+                    className="w-full text-xs border border-slate-300 rounded-xl px-3 py-2 bg-white"
+                  >
+                    <option value="user">User</option>
+                    <option value="manager">Manager</option>
+                    <option value="admin">Admin</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">Department</label>
+                  <select
+                    value={editingUser.department}
+                    onChange={(e) => setEditingUser({ ...editingUser, department: e.target.value })}
+                    className="w-full text-xs border border-slate-300 rounded-xl px-3 py-2 bg-white"
+                  >
+                    <option value="Backend & Cloud Infrastructure">Backend & Cloud</option>
+                    <option value="Product & Frontend Web">Frontend Web</option>
+                    <option value="Product Design & UX">Design & UX</option>
+                    <option value="QA & Security Operations">QA & Security</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-slate-700 mb-1">Job Title</label>
+                <input
+                  type="text"
+                  value={editingUser.title || ''}
+                  onChange={(e) => setEditingUser({ ...editingUser, title: e.target.value })}
+                  placeholder="e.g. Senior Frontend Engineer"
+                  className="w-full text-xs border border-slate-300 rounded-xl px-3.5 py-2 focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                />
+              </div>
+
+              {editingUser.role === 'user' && (
+                <div>
+                  <label className="block text-xs font-bold text-slate-700 mb-1">
+                    Assign Division Manager
+                  </label>
+                  <select
+                    value={editingUser.manager || ''}
+                    onChange={(e) => setEditingUser({ ...editingUser, manager: e.target.value })}
+                    className="w-full text-xs border border-slate-300 rounded-xl px-3 py-2 bg-white"
+                  >
+                    <option value="">Unassigned</option>
+                    {usersList
+                      .filter((u) => u.role === 'manager' && u._id !== editingUser._id)
+                      .map((m) => (
+                        <option key={m._id} value={m._id}>
+                          {m.name} ({m.department})
+                        </option>
+                      ))}
+                  </select>
+                </div>
+              )}
+
+              <div className="flex justify-end gap-2.5 pt-4 border-t border-slate-100">
+                <button
+                  type="button"
+                  onClick={() => setEditingUser(null)}
+                  className="px-4 py-2 border border-slate-300 text-xs font-semibold text-slate-700 rounded-xl"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold rounded-xl shadow-xs"
+                >
+                  Save Changes
                 </button>
               </div>
             </form>
